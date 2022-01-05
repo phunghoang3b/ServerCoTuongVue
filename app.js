@@ -20,6 +20,12 @@ io.on('connection', (socket) =>{
         socket.broadcast.emit('socketServerSendDataToClient', data)
     })
 
+    //Server nhận dữ liệu từ client khi người dùng di chuyển quân cờ
+    socket.on('socketClientSendDataQuanCoToServer', function(data){
+        console.log("dữ liệu nhận được: " +  data);
+        socket.broadcast.emit('socketClientSendDataQuanCoToServer', data)
+    })
+
 
 })
 
