@@ -72,6 +72,15 @@ io.on('connection', (socket) =>{
                     if(err) throw err
                     console.log("Đã thêm phòng thành công");
 
+                    //Gửi dữ liệu phòng cho kênh chat tổng
+                    var objectDataLinkInviteServerSendClient = 
+                        {
+                            text: vRoomName,
+                            user: vstrUsernameLogin,
+                            link: true
+                        }
+                    socket.broadcast.emit('socketServerSendDataToClient', objectDataLinkInviteServerSendClient);
+
                     socket.join(vRoomName); // Vào phòng vRoomName
 
                     var objectDataNewRoomServerSendClient = 
@@ -79,7 +88,7 @@ io.on('connection', (socket) =>{
                             NewRoomName : vRoomName,
                             isCheckChange : true
                         }
-
+                    
                     socket.emit("socketServerSendChangePageToBoard", objectDataNewRoomServerSendClient);
                 })
             }else{
