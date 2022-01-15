@@ -1,6 +1,6 @@
 const express = require("express");
 const http = require("http");
-const {Server} = require("socket.io");
+const {Server, RemoteSocket} = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
@@ -160,6 +160,8 @@ io.on('connection', (socket) =>{
             dbConnection.query(vqueryDeleteRoomWhenHostOut, function(err, result){
                 console.log("Host out và xóa phòng");
             })
+            var isLeaRoom = true
+            socket.to(roomNameInGame).emit("socketServerSendLeaveRoom", isLeaRoom)
         }
     });
 
@@ -200,6 +202,11 @@ io.on('connection', (socket) =>{
                 io.to(data.RoomName).emit("IoSendDataInfoPlayer", result);
             })
         })
+
+        socket.on("disconnect", function(){
+            var isLeaRoom = true
+            socket.to(roomNameInGame).emit("socketServerSendLeaveRoom", isLeaRoom)
+        })
     })
 
 
@@ -210,7 +217,11 @@ io.on('connection', (socket) =>{
         socket.to(data.RoomNameHost).emit("socketServerSendChatToRoom", data.MessageChat)  
     })
 
-    
+    //Nhận dữ liệu out phòng
+    socket.on("socketClientSendLeaveRoom", function(data){
+        console.log("Có người out phòng: " + data)
+        socket.to(roomNameInGame).emit("socketServerSendLeaveRoom", data)
+    })
     
 
 })
