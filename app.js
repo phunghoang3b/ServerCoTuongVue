@@ -71,7 +71,8 @@ io.on('connection', (socket) =>{
                 dbConnection.query(vqueryInsertNewRoom, function (err){ // Thực hiện truy vấn thêm phòng mới
                     if(err) throw err
                     console.log("Đã thêm phòng thành công");
-
+                    //Gửi dữ liệu phòng khi tạo phòng cho người chơi khác
+                    socket.broadcast.emit("socketServerSendNewRoom", vRoomName);
                     //Gửi dữ liệu phòng cho kênh chat tổng
                     var objectDataLinkInviteServerSendClient = 
                         {
@@ -109,7 +110,6 @@ io.on('connection', (socket) =>{
                 
                 socket.emit("socketServerSendRequestListRoom", result); // Gửi lại dữ liệu phòng cho client
             });
-
         }
     })
 
