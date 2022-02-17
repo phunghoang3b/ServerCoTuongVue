@@ -5,3 +5,5 @@
 
 -- Tất cả tương tác thuộc về file app.js và không sửa bất cứ thứ gì ở ngoài app.js
 -- Viết bằng socket.io (emit() & on())
+
+-- Luan
